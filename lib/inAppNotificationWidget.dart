@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'chatService.dart';
 
 // In-app notification widget
 class InAppNotificationWidget extends StatelessWidget {
-  final OSNotification notification;
+  final RemoteMessage message;
 
-  const InAppNotificationWidget({super.key, required this.notification});
+  const InAppNotificationWidget({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
-    final data = notification.additionalData;
+    final data = message.data;
 
     return Positioned(
       top: MediaQuery.of(context).padding.top + 10,
@@ -43,7 +43,7 @@ class InAppNotificationWidget extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      notification.body ?? '',
+                      message.notification?.body ?? data['message'] ?? '',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

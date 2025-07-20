@@ -1,4 +1,4 @@
-package com.example.onesignalnoti
+package com.app.firebasenotifications
 
 import android.app.NotificationManager
 import android.app.PendingIntent

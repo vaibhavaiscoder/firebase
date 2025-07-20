@@ -1,4 +1,4 @@
-package com.example.onesignalnoti
+package com.app.firebasenotifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

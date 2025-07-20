@@ -1,7 +1,7 @@
-// Background Message Handler
+// Firebase Background Message Handler
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'dataBaseHelper.dart';
 import 'messageModel.dart';

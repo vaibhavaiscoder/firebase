@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1021245387495",
+    "project_id": "flutter-firebase-noti",
+    "storage_bucket": "flutter-firebase-noti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021245387495:android:9a8e0d4994bd4cafc2a842",
+        "android_client_info": {
+          "package_name": "com.example.firebase_notifications_with_navigation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjzkXOLgH3683WD4Q71EKD-I3loNxYkPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021245387495:android:99e8455c59ca3748c2a842",
+        "android_client_info": {
+          "package_name": "com.example.firebasenotifications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjzkXOLgH3683WD4Q71EKD-I3loNxYkPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021245387495:android:105229879b34f793c2a842",
+        "android_client_info": {
+          "package_name": "com.example.onesignalnoti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjzkXOLgH3683WD4Q71EKD-I3loNxYkPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

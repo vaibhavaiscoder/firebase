@@ -43,7 +43,7 @@ Authorization: Basic YOUR_REST_API_KEY
 }
 ```
 
-### Enhanced Notification with Reply Action (Android)
+### Enhanced Notification with Reply Action (Android & iOS)
 
 ```json
 {
@@ -64,6 +64,7 @@ Authorization: Basic YOUR_REST_API_KEY
     "timestamp": "2024-01-20T10:30:00Z"
   },
   "android_channel_id": "chat_notifications",
+  "ios_category": "CHAT_MESSAGE",
   "priority": 10,
   "ttl": 3600,
   "buttons": [
@@ -77,7 +78,9 @@ Authorization: Basic YOUR_REST_API_KEY
   "android_visibility": 1,
   "android_led_color": "FF009688",
   "android_sound": "notification_sound",
-  "android_group": "chat_messages"
+  "android_group": "chat_messages",
+  "mutable_content": true,
+  "content_available": true
 }
 ```
 
@@ -421,3 +424,42 @@ curl -X POST \
 
 
 api key: os_v2_app_4pznslj2kngsbltwznbz2ww3wq6jix7htuou4inkttxzdfvcbsnaqjnd6dyyvy6a7sclzggipcium7jusxzt3bf2vpe2nyv4ukwrvaa
+
+
+postman steps to perform:
+
+apiUrl: https://onesignal.com/api/v1/notifications
+
+headers:
+Authorization: Basic os_v2_app_4pznslj2kngsbltwznbz2ww3wq6jix7htuou4inkttxzdfvcbsnaqjnd6dyyvy6a7sclzggipcium7jusxzt3bf2vpe2nyv4ukwrvaa
+
+Content-Type: application/json
+
+body: {
+  "app_id": "e3f2d92d-3a53-4d20-ae76-cb439d5adbb4",
+  "include_external_user_ids": ["current_user_1753010198513"],
+  "headings": {"en": "John Doe"},
+  "contents": {"en": "Hey! How are you doing?"},
+  "data": {
+    "type": "chat_message",
+    "chatId": "chat_123",
+    "senderId": "user_456",
+    "senderName": "John Doe",
+    "message": "Hey! How are you doing?",
+    "timestamp": "2024-01-20T10:30:00Z"
+  },
+  "android_channel_id": "18a93110-a656-40e0-9072-1545d327ab21",
+  "ios_category": "CHAT_MESSAGE",
+  "buttons": [
+    {
+      "id": "reply_button",
+      "text": "Reply",
+      "icon": "ic_reply"
+    }
+  ],
+  "mutable_content": true,
+  "content_available": true
+}
+
+
+Note: create channel in one signal dashboard app for android_channel_id

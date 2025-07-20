@@ -18,28 +18,46 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   List<Message> messages = [];
-  late String chatId;
-  late String userId;
-  late String userName;
+  String chatId = '';
+  String userId = '';
+  String userName = 'Unknown';
+  bool _isLoading = true;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     final args = ModalRoute.of()!.settings.arguments as Map<String, dynamic>;
-  //     chatId = args['chatId'];
-  //     userId = args['userId'];
-  //     userName = args['userName'] ?? 'Unknown';
-  //     _loadMessages();
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeChat();
+    });
+  }
+
+  Future<void> _initializeChat() async {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      setState(() {
+        chatId = args['chatId'] ?? '';
+        userId = args['userId'] ?? '';
+        userName = args['userName'] ?? args['senderName'] ?? 'Unknown';
+      });
+      await _loadMessages();
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   Future<void> _loadMessages() async {
-    final loadedMessages = await DatabaseHelper.getMessages(chatId);
-    setState(() {
-      messages = loadedMessages;
-    });
-    _scrollToBottom();
+    if (chatId.isEmpty) return;
+    
+    try {
+      final loadedMessages = await DatabaseHelper.getMessages(chatId);
+      setState(() {
+        messages = loadedMessages;
+      });
+      _scrollToBottom();
+    } catch (e) {
+      print('Error loading messages: $e');
+    }
   }
 
   void _scrollToBottom() {
@@ -78,6 +96,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.teal,
+          title: Text('Loading...'),
+        ),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
@@ -85,7 +115,10 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             CircleAvatar(
               backgroundColor: Colors.white,
-              child: Text(userName.substring(0, 1), style: TextStyle(color: Colors.teal)),
+              child: Text(
+                userName.isNotEmpty ? userName.substring(0, 1).toUpperCase() : 'U',
+                style: TextStyle(color: Colors.teal),
+              ),
             ),
             SizedBox(width: 10),
             Column(

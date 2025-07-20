@@ -21,6 +21,9 @@ class NotificationService {
     // Request permission for notifications
     await OneSignal.Notifications.requestPermission(true);
 
+    // Set external user ID for testing (replace with actual user ID in production)
+    await setExternalUserId('test_user_123');
+
     // Initialize background message handler
     await BackgroundMessageHandler.initialize();
 
@@ -32,14 +35,14 @@ class NotificationService {
   }
 
   static void _setupNotificationListeners() {
-    // Handle foreground notifications
+    // Handle ALL notifications (foreground, background, terminated)
     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
       final data = event.notification.additionalData;
       
       if (data?['type'] == 'chat_message') {
-        // Create custom notification with reply action
+        // Always create custom notification with reply action
         _showCustomNotificationWithReply(event.notification);
-        event.preventDefault(); // Prevent default notification
+        event.preventDefault(); // Prevent default OneSignal notification
       } else {
         event.notification.display();
       }
@@ -52,13 +55,14 @@ class NotificationService {
       if (data?['type'] == 'chat_message') {
         final chatId = data?['chatId'] ?? '';
         final senderId = data?['senderId'] ?? '';
+        final senderName = data?['senderName'] ?? 'Unknown';
         
         // Navigate to chat screen
-        _navigateToChat(chatId, senderId);
+        _navigateToChat(chatId, senderId, senderName);
       }
     });
 
-    // Handle background/terminated notifications
+    // Handle notification permission changes
     OneSignal.Notifications.addPermissionObserver((state) {
       print("Notification permission: $state");
     });
@@ -161,10 +165,11 @@ class NotificationService {
     }
   }
 
-  static void _navigateToChat(String chatId, String senderId) {
+  static void _navigateToChat(String chatId, String senderId, [String? senderName]) {
     navigatorKey.currentState?.pushNamed('/chat', arguments: {
       'chatId': chatId,
       'userId': senderId,
+      'senderName': senderName ?? 'Unknown',
     });
   }
 
@@ -195,14 +200,13 @@ class NotificationService {
   }
 
   // Set external user ID
-  // static Future<void> setExternalUserId() async {
-  //   // final userId = getExternalUserId();
-  //   try {
-  //     OneSignal.login(userId.toString());
-  //   } catch (e) {
-  //     print('Error setting external user ID: $e');
-  //   }
-  // }
+  static Future<void> setExternalUserId(String userId) async {
+    try {
+      OneSignal.login(userId);
+    } catch (e) {
+      print('Error setting external user ID: $e');
+    }
+  }
 
   // Add tags for better targeting
   static Future<void> addTags(Map<String, String> tags) async {

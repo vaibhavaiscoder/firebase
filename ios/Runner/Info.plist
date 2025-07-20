@@ -45,5 +45,16 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Notification capabilities -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>background-processing</string>
+	</array>
+	
+	<!-- Notification categories for quick reply -->
+	<key>UNUserNotificationCenterDelegate</key>
+	<string>$(PRODUCT_MODULE_NAME).AppDelegate</string>
 </dict>
 </plist>

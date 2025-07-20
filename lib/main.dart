@@ -1,37 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-void main() {
+import 'chatListScreen.dart';
+import 'chatScreen.dart';
+import 'dataBaseHelper.dart';
+import 'notificationService.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize database
+  await DatabaseHelper.database;
+
+  // Initialize notification service
+  await NotificationService.initialize();
+
   runApp(MyApp());
-
-  // OneSignal initialization
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  OneSignal.initialize("e3f2d92d-3a53-4d20-ae76-cb439d5adbb4"); // ← Replace with your onesignal App ID
-
-  // Prompt user for push notification permission (iOS)
-  OneSignal.Notifications.requestPermission(true);
-
-  // Handle foreground push
-  OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-    event.preventDefault(); // prevent default notification
-    event.notification.display(); // show manually
-  });
-
-  // Handle notification tap
-  OneSignal.Notifications.addClickListener((event) {
-    print('Notification Clicked: ${event.notification.jsonRepresentation()}');
-  });
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'OneSignal Push Example',
-      home: Scaffold(
-        appBar: AppBar(title: Text("Push Demo")),
-        body: Center(child: Text("Waiting for notifications...")),
+      title: 'Chat App with Notifications',
+      navigatorKey: NotificationService.navigatorKey,
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => ChatListScreen(),
+        '/chat': (context) => ChatScreen(),
+      },
     );
   }
 }
+
+
